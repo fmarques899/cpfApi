@@ -1,23 +1,43 @@
-Router.route('/test', { where: 'server'}).get(function() {
-  this.response.writeHead(200, {'Content-Type': 'application/json'});
-  this.response.end(JSON.stringify({
-    message: "Touched the server side",
-  }));
+Router.route('/test', {
+    where: 'server'
+}).get(function() {
+    this.response.writeHead(200, {
+        'Content-Type': 'application/json'
+    });
+    this.response.end(JSON.stringify({
+        message: "Touched the server side",
+    }));
 });
 
 
-Router.route('/getPersonByCpf/:cpf/:birthDate', {where: 'server'}).get(function() {
-  this.response.writeHead(200, {'Content-Type': 'application/json'});
+Router.route('/getPersonByCpf/:cpf/:birthDate', {
+    where: 'server'
+}).get(function() {
+    this.response.writeHead(200, {
+        'Content-Type': 'application/json'
+    });
 
-  var cpf = this.params.cpf;
-  var birthDate = new Date(this.params.birthDate);
+    var cpf = this.params.cpf;
+    var birthDate = new Date(this.params.birthDate);
 
-  const person = Persons.findOne({
-    'cpf': cpf,
-    // 'birthDate': birthDate,
-  });
+    const person = Persons.findOne({
+        'cpf': cpf,
+        // 'birthDate': birthDate,
+    });
 
-  console.log(person);
-  this.response.end(JSON.stringify(person));
+    console.log(person);
+    this.response.end(JSON.stringify(person));
 
+});
+
+Router.route('/insertPerson', {
+    where: 'server'
+}).post(function() {
+    this.response.writeHead(200, {
+        'Content-Type': 'application/json'
+    });
+
+    const personId = Persons.insert(this.request['body']);
+
+    this.response.end(JSON.stringify(personId));
 })
